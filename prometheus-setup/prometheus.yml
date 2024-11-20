@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: "Prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
+      - labels:
+          application: "Prometheus"
+  - job_name: "Rede Materna Api WEB"
+    metrics_path: "api/actuator/prometheus"
+    static_configs:
+      - targets: ["rede-materna-api:8080"]
+      - labels:
+          application: "Rede Materna APP API"
+  - job_name: "Rede Materna Api APP"
+    metrics_path: "api/v2/actuator/prometheus"
+    static_configs:
+      - targets: ["rede-materna-api-v2:8080"]
+      - labels:
+          application: "Rede Materna WEB API"
+

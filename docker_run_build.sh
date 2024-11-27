@@ -3,15 +3,21 @@
 # Nome dos containers e rede
 CONTAINER_GRAFANA="grafana"
 CONTAINER_PROMETHEUS="prometheus"
-NETWORK_NAME="grafana-network"
+NETWORK_NAME="observability"
 
-# Verifica se a rede grafana-network existe
+# Verifica se a rede observability existe
 sudo docker network ls | grep -q "$NETWORK_NAME"
 if [ $? -eq 0 ]; then
   echo "A rede '$NETWORK_NAME' já existe."
 else
-  echo "Erro: A rede '$NETWORK_NAME' não existe. Crie a rede antes de rodar o script."
-  exit 1
+  echo "A rede '$NETWORK_NAME' não existe. Criando a rede..."
+  sudo docker network create "$NETWORK_NAME"
+  if [ $? -eq 0 ]; then
+    echo "A rede '$NETWORK_NAME' foi criada com sucesso."
+  else
+    echo "Erro ao criar a rede '$NETWORK_NAME'."
+    exit 1
+  fi
 fi
 
 # Função para parar, remover e recriar os containers
